@@ -1,9 +1,13 @@
 #include <ctype.h>
 #include <stdio.h>
+#include <windows.h>
 #include "funcs.h"
 
 int main(void)
 {
+    // Налаштування кодування UTF-8 для консолі Windows
+    SetConsoleOutputCP(CP_UTF8);
+
     int matrix[MAX_SIZE][MAX_SIZE];
     int N, i, j;
     int max_value;
@@ -14,7 +18,7 @@ int main(void)
     // Введення та перевірка розміру квадратної матриці
     while (1)
     {
-        printf("Enter matrix size N (1-%d): ", MAX_SIZE);
+        printf("Введіть розмір матриці N (1-%d): ", MAX_SIZE);
         readStatus = scanf("%d", &N);
         extra = 0;
 
@@ -28,12 +32,12 @@ int main(void)
         if (readStatus == 1 && !extra && N >= 1 && N <= MAX_SIZE)
             break;
 
-        printf("Error: invalid matrix size. Try again.\n");
+        printf("Помилка: некоректний розмір матриці. Спробуйте ще раз.\n");
         if (ch == EOF) return 1;
     }
 
     // Зчитування елементів матриці з повторним запитом у разі помилки
-    printf("\nEnter matrix elements:\n");
+    printf("\nВведіть елементи матриці:\n");
     for (i = 0; i < N; i++)
     {
         for (j = 0; j < N; j++)
@@ -54,14 +58,14 @@ int main(void)
                 if (readStatus == 1 && !extra)
                     break;
 
-                printf("Error: invalid element. Try again.\n");
+                printf("Помилка: некоректний елемент. Спробуйте ще раз.\n");
                 if (ch == EOF) return 1;
             }
         }
     }
 
     // Виведення введеної матриці
-    printf("\nMatrix A:\n");
+    printf("\nМатриця A:\n");
     for (i = 0; i < N; i++)
     {
         for (j = 0; j < N; j++)
@@ -75,9 +79,9 @@ int main(void)
     max_value = find_max_lower_triangle(matrix, N, &max_row, &max_col);
 
     // Виведення результату та індексів (нумерація з нуля)
-    printf("\nMaximum value: %d\n", max_value);
-    printf("Row index: %d\n", max_row);
-    printf("Column index: %d\n", max_col);
+    printf("\nМаксимальне значення: %d\n", max_value);
+    printf("Індекс рядка: %d\n", max_row);
+    printf("Індекс стовпця: %d\n", max_col);
 
     return 0;
 }
