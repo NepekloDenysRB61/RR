@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <stdio.h>
 #include "funcs.h"
 
@@ -8,26 +9,53 @@ int main(void)
     int max_value;
     int max_row = 0;
     int max_col = 0;
+    int readStatus, ch, extra;
 
     // Введення та перевірка розміру квадратної матриці
-    printf("Enter matrix size N (1-%d): ", MAX_SIZE);
-    if (scanf("%d", &N) != 1 || N < 1 || N > MAX_SIZE)
+    while (1)
     {
-        printf("Error: invalid matrix size.\n");
-        return 1;
+        printf("Enter matrix size N (1-%d): ", MAX_SIZE);
+        readStatus = scanf("%d", &N);
+        extra = 0;
+
+        // Перевірка наявності зайвих символів у рядку
+        while ((ch = getchar()) != '\n' && ch != EOF)
+        {
+            if (!isspace((unsigned char)ch))
+                extra = 1;
+        }
+
+        if (readStatus == 1 && !extra && N >= 1 && N <= MAX_SIZE)
+            break;
+
+        printf("Error: invalid matrix size. Try again.\n");
+        if (ch == EOF) return 1;
     }
 
-    // Зчитування елементів матриці з клавіатури
+    // Зчитування елементів матриці з повторним запитом у разі помилки
     printf("\nEnter matrix elements:\n");
     for (i = 0; i < N; i++)
     {
         for (j = 0; j < N; j++)
         {
-            printf("A[%d][%d] = ", i, j);
-            if (scanf("%d", &matrix[i][j]) != 1)
+            while (1)
             {
-                printf("Error: invalid matrix element.\n");
-                return 1;
+                printf("A[%d][%d] = ", i, j);
+                readStatus = scanf("%d", &matrix[i][j]);
+                extra = 0;
+
+                // Перевірка коректності введеного елемента
+                while ((ch = getchar()) != '\n' && ch != EOF)
+                {
+                    if (!isspace((unsigned char)ch))
+                        extra = 1;
+                }
+
+                if (readStatus == 1 && !extra)
+                    break;
+
+                printf("Error: invalid element. Try again.\n");
+                if (ch == EOF) return 1;
             }
         }
     }
